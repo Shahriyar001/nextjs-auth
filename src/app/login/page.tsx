@@ -1,4 +1,5 @@
 "use client";
+import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
@@ -9,6 +10,17 @@ type FormValues = {
 };
 
 const LoginPage = () => {
+  const handleSignIn = async () => {
+    try {
+      const result = await signIn("github");
+      if (result?.error) {
+        console.error("GitHub Sign-in Error:", result.error);
+      }
+    } catch (error) {
+      console.error("Error during GitHub sign-in:", error);
+    }
+  };
+
   const {
     register,
     handleSubmit,
@@ -57,7 +69,7 @@ const LoginPage = () => {
               <input
                 {...register("password")}
                 type="password"
-                placeholder="Email"
+                placeholder="Password"
                 className="input input-bordered"
                 required
               />
@@ -85,7 +97,14 @@ const LoginPage = () => {
                 alt="google logo"
               />
             </button>
-            <button className="btn btn-circle">
+            <button
+              onClick={() =>
+                signIn("github", {
+                  callbackUrl: "http://localhost:3000/dashboard",
+                })
+              }
+              className="btn btn-circle"
+            >
               <Image
                 src="https://cdn-icons-png.flaticon.com/512/25/25231.png"
                 width={35}
