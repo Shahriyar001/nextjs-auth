@@ -16,7 +16,10 @@ const DashboardPage = async () => {
             Logged-in user email: {session?.user?.email}
           </h1>
           <Image
-            src={session?.user?.image}
+            src={
+              session?.user?.image ||
+              "https://static-00.iconduck.com/assets.00/profile-default-icon-2048x2045-u3j7s5nj.png"
+            }
             alt="user-img"
             width={100}
             height={100}
